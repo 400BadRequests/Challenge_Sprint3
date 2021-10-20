@@ -2,29 +2,32 @@ import React from "react";
 import {
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
+  TextInput,
 } from "react-native";
-import Icon from "react-native-vector-icons/AntDesign";
 
-export default function FirstPage({ navigation }) {
+export default function RegisterPage({ navigation, route }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>TALK TO ME</Text>
       <View style={styles.inputContainer}>
+        <TextInput style={styles.input} placeholder="NOME COMPLETO" />
         <TextInput style={styles.input} placeholder="EMAIL" />
         <TextInput style={styles.input} placeholder="SENHA" />
+        <TextInput style={styles.input} placeholder="NÚMERO DE TELEFONE" />
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("registerPage")}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.buttonText}>CANCELAR</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("home")}
         >
           <Text style={styles.buttonText}>REGISTRAR</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>ENTRAR</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -34,18 +37,13 @@ export default function FirstPage({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
     justifyContent: "center",
-  },
-  title: {
-    fontSize: 24,
-    color: "#383838",
-    marginTop: 100,
+    backgroundColor: "white",
+    alignItems: "center",
   },
   input: {
     height: 50,
-    margin: 12,
+    margin: 8,
     borderWidth: 2,
     borderColor: "#808080",
     width: 330,
@@ -53,7 +51,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   inputContainer: {
-    marginVertical: 30,
+    marginTop: 60,
+    marginBottom: 50,
   },
   button: {
     borderWidth: 2,
@@ -73,6 +72,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     paddingHorizontal: 20,
-    flex: 1,
+    marginBottom: 100,
   },
 });
