@@ -4,34 +4,22 @@ import Icon from "react-native-vector-icons/AntDesign";
 
 import Rodape from "./Rodape";
 
-export default function HomePage({ navigation }) {
+export default function NewService({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.name}>Olá, x</Text>
-      <Text style={styles.title}>ATENDIMENTOS</Text>
       <View style={styles.attendanceInfo}>
-        <Text style={styles.attendanceId}>#2</Text>
-        <Text style={styles.date}>03/04/2020</Text>
         <Text style={styles.time}>15:32</Text>
+        <Text style={styles.letter}>"(letra reconhecida)"</Text>
       </View>
-      <View style={styles.attendanceInfo}>
-        <Text style={styles.attendanceId}>#2</Text>
-        <Text style={styles.date}>04/04/2020</Text>
-        <Text style={styles.time}>15:32</Text>
-      </View>
-      <View style={styles.attendanceInfo}>
-        <Text style={styles.attendanceId}>#2</Text>
-        <Text style={styles.date}>05/04/2020</Text>
-        <Text style={styles.time}>15:32</Text>
-      </View>
+
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("newService")}
+          onPress={() => navigation.navigate("camera")}
         >
           <Icon
             style={styles.iconButton}
-            name="plus"
+            name="camera"
             size={30}
             color="#000000"
           />
@@ -73,11 +61,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+    paddingLeft: 10,
   },
-  date: {
-    fontSize: 28,
+  letter: {
+    fontSize: 22,
     fontWeight: "bold",
-    marginHorizontal: 35,
+    marginHorizontal: 20,
   },
   attendanceId: {
     fontSize: 15,
