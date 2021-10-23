@@ -37,8 +37,4 @@ public class Atendimento {
 
     @OneToMany(mappedBy = "atendimento")
     private List<Pergunta> perguntas;
-
-    public Long getFuncionarioId(){
-        return getFuncionario().getId();
-    }
 }

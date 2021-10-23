@@ -32,7 +32,7 @@ public class AtendimentoMapper {
     public AtendimentoDTO convertToDto(Atendimento entity){
         return this.modelMapper
                 .typeMap(Atendimento.class, AtendimentoDTO.class)
-                .addMapping(Atendimento::getFuncionarioId, AtendimentoDTO::setFuncionarioId)
+                .addMapping(Atendimento::getFuncionario, AtendimentoDTO::setFuncionario)
                 .map(entity);
     }
 

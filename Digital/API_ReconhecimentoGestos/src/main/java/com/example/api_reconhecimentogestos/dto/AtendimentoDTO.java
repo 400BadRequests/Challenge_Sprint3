@@ -1,5 +1,6 @@
 package com.example.api_reconhecimentogestos.dto;
 
+import com.example.api_reconhecimentogestos.model.Funcionario;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +19,5 @@ public class AtendimentoDTO {
     private String assunto;
     @Temporal(TemporalType.DATE)
     private Calendar data;
-    private Long funcionarioId;
+    private Funcionario funcionario;
 }
