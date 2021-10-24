@@ -185,3 +185,41 @@ EXCEPTION
 END;
 
 EXEC pega_atendimento(1);
+
+CREATE OR REPLACE PACKAGE pacote_funcoes
+IS
+    FUNCTION pega_nome
+        (p_ID_FUNCIONARIO IN TB_FUNCIONARIO.ID_FUNCIONARIO%TYPE)
+        RETURN VARCHAR2
+    IS
+        v_NOME_COMPLETO TB_FUNCIONARIO.NOME_COMPLETO%TYPE :='Sem Nome';
+    BEGIN
+        SELECT NOME_COMPLETO
+            INTO v_NOME_COMPLETO
+            FROM TB_FUNCIONARIO
+            WHERE ID_FUNCIONARIO = p_ID_FUNCIONARIO;
+        RETURN v_NOME_COMPLETO; 
+        
+        PROCEDURE pega_atendimento(id NUMBER) 
+IS
+  r_atendimento TB_ATENDIMENTO%rowtype;
+BEGIN
+    SELECT *
+    INTO r_atendimento
+    FROM TB_ATENDIMENTO
+    WHERE ID_ATENDIMENTO = p_ID_ATENDIMENTO;
+    
+    dbms_output.put_line('Id do funcionário: ' || r_atendimento.ID_FUNCIONARIO ||
+     '. Duração da interação:' ||r_atendimento.DURACAO_MINUTOS ||
+     '. Assunto:
+     ' ||r_atendimento.ASSUNTO);
+     
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line( SQLERRM );
+END;
+
+    END pacote_funcoes;
+    
+    
+        
