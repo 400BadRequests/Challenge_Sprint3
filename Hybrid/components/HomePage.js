@@ -1,29 +1,29 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 
 import Rodape from "./Rodape";
 
 export default function HomePage({ navigation }) {
-  const [attendances, setAttendances] = useState([])
-  useEffect(() => {
-    axios.get('http://10.0.2.2:8080/api/attendance').then((res) => setAttendances(res.data))
-  }, [])
-
   return (
     <View style={styles.container}>
       <Text style={styles.name}>Olá, x</Text>
       <Text style={styles.title}>ATENDIMENTOS</Text>
-      {attendances && 
-        attendances.map((attendance) => {
-          return <View style={styles.attendanceInfo}>
-        <Text style={styles.attendanceId}># {attendance.id}</Text>
-        <Text style={styles.date}>{attendance.data.split('T')[0]}</Text>
-        <Text style={styles.time}>{attendance.duracaoMinutos} minutos</Text>
+      <View style={styles.attendanceInfo}>
+        <Text style={styles.attendanceId}>#2</Text>
+        <Text style={styles.date}>03/04/2020</Text>
+        <Text style={styles.time}>15:32</Text>
       </View>
-        })
-      }
+      <View style={styles.attendanceInfo}>
+        <Text style={styles.attendanceId}>#2</Text>
+        <Text style={styles.date}>04/04/2020</Text>
+        <Text style={styles.time}>15:32</Text>
+      </View>
+      <View style={styles.attendanceInfo}>
+        <Text style={styles.attendanceId}>#2</Text>
+        <Text style={styles.date}>05/04/2020</Text>
+        <Text style={styles.time}>15:32</Text>
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}

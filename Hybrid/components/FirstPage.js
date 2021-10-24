@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -7,38 +7,14 @@ import {
   View,
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
-import axios from "axios"
-
 
 export default function FirstPage({ navigation }) {
-  const [id, setId] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState(false)
-
-  const retrieveUserLogin = (employeeId) => {
-    axios.get(`http://10.0.2.2:8080/api/user/${employeeId}`).then((res) => {
-      if (res.data.senha === password) {
-        setError(false)
-        navigation.navigate("home")
-      } else {
-        setError(true)
-      }
-    })
-    .catch((err => {
-      setError(true)
-      console.log(err)
-    }))
-  }
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>TALK TO ME</Text>
       <View style={styles.inputContainer}>
-        <TextInput style={styles.input} placeholder="ID DE FUNCIONARIO" onChangeText={(id) => setId(id)} />
-        <TextInput style={styles.input} placeholder="SENHA" secureTextEntry onChangeText={(password) => setPassword(password)} />
-        {error &&
-          <Text style={styles.errorText}>*Erro no login. Por favor, revise seus dados e tente novamente</Text>
-        }
+        <TextInput style={styles.input} placeholder="EMAIL" />
+        <TextInput style={styles.input} placeholder="SENHA" />
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
@@ -48,7 +24,7 @@ export default function FirstPage({ navigation }) {
           <Text style={styles.buttonText}>REGISTRAR</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText} onPress={() => retrieveUserLogin(id, password)}>ENTRAR</Text>
+          <Text style={styles.buttonText}>ENTRAR</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -78,12 +54,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginVertical: 30,
-  },
-  errorText: {
-    width: 330,
-    borderRadius: 20,
-    paddingHorizontal: 20,
-    color: "#ff0000",
   },
   button: {
     borderWidth: 2,

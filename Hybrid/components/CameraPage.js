@@ -13,7 +13,9 @@ import BtnTakePicture from "react-native-vector-icons/Entypo";
 import CloseWindow from "react-native-vector-icons/FontAwesome";
 import GoBackIcon from "react-native-vector-icons/AntDesign";
 import { Camera } from "expo-camera";
-// import * as fs from "fs";
+import * as Permissions from "expo-permissions";
+import * as MediaLibrary from "expo-media-library";
+import ImageResizer from "react-native-image-resizer";
 
 export default function CameraPage({ navigation }) {
   const camRef = useRef(null);
@@ -21,10 +23,19 @@ export default function CameraPage({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [capturedPhoto, setCapturedPhoto] = useState(null);
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState("contain");
+  const [onlyScaleDown, setOnlyScaleDown] = useState(false);
+  const [resizeTargetSize, setResizeTargetSize] = useState(80);
+  const [capturedPhotoString, setCapturedPhotoString] = useState("");
 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+
+    (async () => {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       setHasPermission(status === "granted");
     })();
   }, []);
@@ -41,23 +52,53 @@ export default function CameraPage({ navigation }) {
     if (camRef) {
       const options = { base64: true };
 
-      const data = await camRef.current.takePictureAsync(options);
-      setCapturedPhoto(data.base64);
+      const data = await camRef.current.takePictureAsync();
+      setCapturedPhoto(data.uri);
+      let imageStringComplete = data.uri;
+      let fields = imageStringComplete.split("/");
+      let imageString = fields[11];
+      setCapturedPhotoString(imageString);
       setOpen(true);
-      let base64String = "data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgA"; // Not a real image
+      // let base64String = "data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgA"; // Not a real image
 
-      // Remove header
-      let base64Image = base64String.split(";base64,").pop();
-      // fs.writeFile(
-      //   "image.jpg",
-      //   base64Image,
-      //   { encoding: "base64" },
-      //   function (err) {
-      //     console.log("File created");
-      //   }
-      // );
-      console.log(data);
+      // // Remove header
+      // let base64Image = base64String.split(";base64,").pop();
     }
+  }
+
+  // function resize() {
+  //   ImageResizer.createResizedImage(
+  //     capturedPhotoString,
+  //     resizeTargetSize,
+  //     resizeTargetSize,
+  //     "JPEG",
+  //     100,
+  //     0,
+  //     undefined,
+  //     false,
+  //     { mode, onlyScaleDown }
+  //   )
+  //     .then((item) => {
+  //       setResizedImage(item);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       return Alert.alert(
+  //         "Unable to resize the photo",
+  //         "Check the console for full the error message"
+  //       );
+  //     });
+  // }
+
+  async function savePicture() {
+    // let resizedImage = resize(capturedPhotoString);
+    const asset = await MediaLibrary.createAssetAsync(capturedPhoto)
+      .then(() => {
+        alert("Salvo com sucesso");
+      })
+      .catch((error) => {
+        console.log("err", error);
+      });
   }
 
   return (
@@ -114,7 +155,7 @@ export default function CameraPage({ navigation }) {
             style={{
               flex: 1,
               justifyContent: "center",
-              alignContent: "center",
+              alignItems: "center",
             }}
           >
             <Image
@@ -122,17 +163,38 @@ export default function CameraPage({ navigation }) {
               style={{ width: "100%", height: 100, resizeMode: "contain" }}
               source={{ uri: capturedPhoto }}
             />
-            <TouchableOpacity
-              style={styles.windowCloseBtn}
-              onPress={() => setOpen(false)}
+            <View
+              style={{
+                margin: 10,
+                flexDirection: "row",
+                position: "absolute",
+                bottom: 20,
+                alignContent: "center",
+              }}
             >
-              <CloseWindow
-                style={styles.iconButton}
-                name="window-close"
-                size={60}
-                color="#FF0000"
-              />
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.windowCloseBtn}
+                onPress={() => setOpen(false)}
+              >
+                <CloseWindow
+                  style={styles.iconButton}
+                  name="window-close"
+                  size={60}
+                  color="#FF0000"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.windowCloseBtn}
+                onPress={savePicture}
+              >
+                <CloseWindow
+                  style={styles.iconButton}
+                  name="upload"
+                  size={50}
+                  color="#121212"
+                />
+              </TouchableOpacity>
+            </View>
           </View>
         </Modal>
       )}
@@ -166,8 +228,6 @@ const styles = StyleSheet.create({
   },
   windowCloseBtn: {
     margin: 10,
-    position: "absolute",
     alignSelf: "center",
-    bottom: 20,
   },
 });
