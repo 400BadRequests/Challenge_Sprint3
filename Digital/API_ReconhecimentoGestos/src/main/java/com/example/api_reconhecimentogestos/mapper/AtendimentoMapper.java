@@ -30,10 +30,14 @@ public class AtendimentoMapper {
     }
 
     public AtendimentoDTO convertToDto(Atendimento entity){
-        return this.modelMapper
-                .typeMap(Atendimento.class, AtendimentoDTO.class)
-                .addMapping(Atendimento::getFuncionario, AtendimentoDTO::setFuncionario)
-                .map(entity);
+        AtendimentoDTO dto = new AtendimentoDTO();
+        Funcionario funcionario = funcionarioService.findById(entity.getFuncionario().getId());
+        dto.setId(entity.getId());
+        dto.setDuracaoMinutos(entity.getDuracaoMinutos());
+        dto.setAssunto(entity.getAssunto());
+        dto.setData(entity.getData());
+        dto.setFuncionario(funcionario.getId());
+        return dto;
     }
 
 }

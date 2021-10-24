@@ -52,7 +52,7 @@ public class AtendimentoController {
     @PutMapping("/{id}")
     public ResponseEntity<AtendimentoDTO> update(@PathVariable Long id, @RequestBody AtendimentoDTO dto){
         Atendimento atendimento = this.atendimentoService.findById(id);
-        Funcionario funcionario = this.funcionarioService.findById(dto.getFuncionario().getId());
+        Funcionario funcionario = this.funcionarioService.findById(dto.getFuncionario());
         atendimento.setData(dto.getData());
         atendimento.setAssunto(dto.getAssunto());
         atendimento.setDuracaoMinutos(dto.getDuracaoMinutos());

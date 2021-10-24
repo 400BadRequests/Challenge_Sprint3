@@ -19,5 +19,5 @@ public class AtendimentoDTO {
     private String assunto;
     @Temporal(TemporalType.DATE)
     private Calendar data;
-    private Funcionario funcionario;
+    private Long funcionario;
 }
